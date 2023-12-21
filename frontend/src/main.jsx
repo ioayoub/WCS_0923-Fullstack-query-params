@@ -2,13 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import axios from "axios";
 
 import App from "./App";
+import HomePage from "./pages/HomePage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+        loader: () =>
+          axios
+            .get("http://localhost:8000/api/articles")
+            .then((res) => res.data),
+      },
+    ],
   },
 ]);
 
