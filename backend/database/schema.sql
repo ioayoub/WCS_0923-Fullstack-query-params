@@ -1,4 +1,9 @@
-create table item (
-  id int unsigned primary key auto_increment not null,
-  title varchar(255) not null
+CREATE TABLE article (
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  price FLOAT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (id)
 );
+

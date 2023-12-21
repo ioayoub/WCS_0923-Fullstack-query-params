@@ -20,14 +20,20 @@ const seed = async () => {
     // Generating Seed Data
 
     // Optional: Truncate tables (remove existing data)
-    await database.query("truncate item");
+    await database.query("truncate article");
 
     // Insert fake data into the 'item' table
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i < 100; i += 1) {
       queries.push(
-        database.query("insert into item(title) values (?)", [
-          faker.lorem.word(),
-        ])
+        database.query(
+          "insert into article(title, description, price, created_at) values (?,?,?,?)",
+          [
+            faker.commerce.productName(),
+            faker.commerce.productDescription(),
+            faker.commerce.price({ min: 1, max: 50 }),
+            faker.date.between({ from: "2023-09-01", to: "2023-12-21" }),
+          ]
+        )
       );
     }
 
