@@ -58,12 +58,18 @@ export default function HomePage() {
     setFilters(params);
   };
 
+  /**
+   * Handles the click event and sends a GET request to retrieve articles based on the filters.
+   */
   const handleClick = () => {
     axios
       .get(`http://localhost:8000/api/articles/?${filters.toString()}`)
       .then((res) => setArticles(res.data));
   };
 
+  /**
+   * Resets the filters and fetches all articles from the API.
+   */
   const handleReset = () => {
     axios
       .get("http://localhost:8000/api/articles")
