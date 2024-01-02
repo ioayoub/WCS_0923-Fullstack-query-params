@@ -27,9 +27,9 @@
   "author": "Wild Code School",
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^8.2.0",
+    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.3"
+    "lint-staged": "^13.3.0"
   }
 }

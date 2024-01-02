@@ -1,13 +1,26 @@
+import { useState, useRef } from "react";
 import { useLoaderData, useSearchParams } from "react-router-dom";
+
 import axios from "axios";
-import { useState } from "react";
 
 export default function HomePage() {
   const data = useLoaderData();
   const [articles, setArticles] = useState(data);
+  const formRef = useRef(null);
 
-  const [filters, setFilters] = useSearchParams();
+  const [filters, setFilters] = useSearchParams({
+    orderby: "",
+    pricemax: "",
+    limit: "",
+  });
 
+  /**
+   * Handles the change event of the select input.
+   * Updates the filters state based on the selected value.
+   * If the selected value is "all", it removes the "orderby" parameter from the filters.
+   * Otherwise, it sets the "orderby" parameter to the selected value.
+   * @param {Event} e - The change event object.
+   */
   const handleSelectChange = (e) => {
     const params = new URLSearchParams(filters);
 
@@ -21,6 +34,11 @@ export default function HomePage() {
     setFilters(params);
   };
 
+  /**
+   * Handles the change event of the range input.
+   * Updates the "pricemax" parameter in the filters object and sets the updated filters.
+   * @param {Event} e - The change event object.
+   */
   const handleRangeChange = (e) => {
     const params = new URLSearchParams(filters);
     params.set("pricemax", e.target.value);
@@ -28,6 +46,11 @@ export default function HomePage() {
     setFilters(params);
   };
 
+  /**
+   * Handles the change event for the limit input field.
+   * Updates the limit parameter in the filters object and sets it as the new filters state.
+   * @param {Event} e - The event object.
+   */
   const handleLimitChange = (e) => {
     const params = new URLSearchParams(filters);
     params.set("limit", e.target.value);
@@ -47,33 +70,36 @@ export default function HomePage() {
       .then((res) => setArticles(res.data));
 
     setFilters("");
+    formRef.current.reset();
   };
 
   return (
     <div>
       <h1 className="text-4xl my-16 text-center ">Articles</h1>
       <div className="flex flex-row justify-center my-4 gap-8">
-        <select onChange={handleSelectChange} className="border">
-          <option value="all">All</option>
-          <option value="ASC">ASC</option>
-          <option value="DESC">DESC</option>
-        </select>
+        <form ref={formRef}>
+          <select onChange={handleSelectChange} className="border">
+            <option value="all">All</option>
+            <option value="ASC">ASC</option>
+            <option value="DESC">DESC</option>
+          </select>
 
-        <input
-          type="range"
-          min={0}
-          max={200}
-          step={5}
-          onChange={handleRangeChange}
-        />
+          <input
+            type="range"
+            min={0}
+            max={200}
+            step={5}
+            onChange={handleRangeChange}
+          />
 
-        <input
-          type="number"
-          min={0}
-          className="border"
-          placeholder="limit"
-          onChange={handleLimitChange}
-        />
+          <input
+            type="number"
+            min={0}
+            className="border"
+            placeholder="limit"
+            onChange={handleLimitChange}
+          />
+        </form>
       </div>
       <div className="flex flex-row gap-4 justify-center my-8">
         <button
